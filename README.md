@@ -10,13 +10,13 @@ This Flutter app implements the assignment requirements for a **hard‑coded mul
 
 ## Assets
 
-- Add your destination photos into `assets/images/` using these filenames (or update `imageAsset` paths in `lib/data/travel_data.dart`):
+- We add our destination photos into `assets/images/` using these filenames (or update `imageAsset` paths in `lib/data/travel_data.dart`):
   - `paris.jpg`
   - `bali.jpg`
   - `kyoto.jpg`
   - `capetown.jpg`
 
-The folder already exists and is wired in `pubspec.yaml` under:
+The folder is wired in `pubspec.yaml` under:
 
 ```yaml
 flutter:
@@ -37,7 +37,7 @@ flutter run
 
 ## Report (for submission)
 
-You can submit this section as your **lab report** (or copy it into a PDF/Word document if a specific format is required).
+This section serves as our **lab report** (it can also be copied into a PDF/Word document if a specific format is required).
 
 ### Screenshots
 
@@ -47,9 +47,9 @@ You can submit this section as your **lab report** (or copy it into a PDF/Word d
 
 ### Layout and design explanation
 
-- **Home Screen**: Uses `Scaffold` and `AppBar` with a custom logo and title. The body is inside a `SafeArea` and `SingleChildScrollView` containing a `Column`. A heading prompts the user, followed by a search bar, horizontal category `ChoiceChip`s, and a `GridView.builder` that shows destination cards. This screen acts as the dashboard for the app.
-- **Detail Screen**: Built with `CustomScrollView` and a `SliverAppBar` that expands to show a large destination photo with a gradient overlay and title. Below, a padded `Column` shows location, rating, trip info chips, description text, and highlight `Chip`s. A bottom `Container` with a price label and primary `ElevatedButton` stays pinned at the bottom for easy access to booking.
-- **Booking Screen**: Uses a `Scaffold` with AppBar and a `Column`. At the top, a `_BookingSummaryCard` shows a small image and key trip info. Below, a `Form` with multiple `TextFormField`s collects traveller details, followed by controls for number of travellers, room type `ChoiceChip`s, and an optional notes field. The bottom row displays the computed total price and a `FilledButton` that confirms the booking and shows a success `AlertDialog`.
+- **Home Screen**: We use `Scaffold` and `AppBar` with a custom logo and title. The body is inside a `SafeArea` and `SingleChildScrollView` containing a `Column`. A heading prompts the user, followed by a search bar, horizontal category `ChoiceChip`s, and a `GridView.builder` that shows destination cards. This screen acts as the dashboard for the app.
+- **Detail Screen**: We build this screen with `CustomScrollView` and a `SliverAppBar` that expands to show a large destination photo with a gradient overlay and title. Below, a padded `Column` shows location, rating, trip info chips, description text, and highlight `Chip`s. A bottom `Container` with a price label and primary `ElevatedButton` stays pinned at the bottom for easy access to booking.
+- **Booking Screen**: We use a `Scaffold` with AppBar and a `Column`. At the top, a `_BookingSummaryCard` shows a small image and key trip info. Below, a `Form` with multiple `TextFormField`s collects traveller details, followed by controls for number of travellers, room type `ChoiceChip`s, and an optional notes field. The bottom row displays the computed total price and a `FilledButton` that confirms the booking and shows a success `AlertDialog`.
 
 ### Widgets used
 
@@ -64,7 +64,7 @@ This app intentionally uses many different Flutter widgets, including (but not l
 
 ### Navigation flow
 
-- From the **Home Screen**, tapping a destination card uses `Navigator.push` with a `MaterialPageRoute` to open the **Detail Screen` and passes a `Destination` object as hard‑coded data.
+- From the **Home Screen**, when we tap a destination card we use `Navigator.push` with a `MaterialPageRoute` to open the **Detail Screen` and pass a `Destination` object as hard‑coded data.
 - On the **Detail Screen**, the back arrow pops to the previous screen, while the home icon uses `Navigator.popUntil((route) => route.isFirst)` to go directly back to the Home Screen. Pressing \"Book now\" pushes the **Booking Screen**, again passing the same `Destination` object.
 - On the **Booking Screen**, the AppBar back button pops back to the Detail Screen, the home icon pops back to the Home Screen, and the \"Confirm\" button validates the `Form` and then shows an `AlertDialog` that confirms the booking and pops the booking screen when closed.
 
