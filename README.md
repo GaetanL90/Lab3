@@ -16,11 +16,11 @@ Home  →  Detail  →  Booking  →  Confirmation  →  ↩ Home
 
 | Home Dashboard | Search & Filters | Drawer |
 |:-:|:-:|:-:|
-| *![Home](assets/images/image.png)* | *![Search](assets/images/image-1.png)* | *![Drawer](assets/images/image-2.png)* |
+| *![Home](lab3_travel_app/assets/images/image.png)* | *![Search](lab3_travel_app/assets/images/image-1.png)* | *![Drawer](lab3_travel_app/assets/images/image-2.png)* |
 
 | Detail Screen | Favorites | Booking |
 |:-:|:-:|:-:|
-| *![Detail](assets/images/image-3.png)* | *![Favorite](assets/images/image-5.png)* | *![Booking](assets/images/image-4.png)* |
+| *![Detail](lab3_travel_app/assets/images/image-3.png)* | *![Favorite](lab3_travel_app/assets/images/image-5.png)* | *![Booking](lab3_travel_app/assets/images/image-4.png)* |
 
 ---
 
