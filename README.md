@@ -16,11 +16,11 @@ Home  →  Detail  →  Booking  →  Confirmation  →  ↩ Home
 
 | Home Dashboard | Search & Filters | Drawer |
 |:-:|:-:|:-:|
-| *![Home](image.png)* | *![Search](image-1.png)* | *![Drawer](image-2.png)* |
+| *![Home](assets/images/image.png)* | *![Search](assets/images/image-1.png)* | *![Drawer](assets/images/image-2.png)* |
 
 | Detail Screen | Favorites | Booking |
 |:-:|:-:|:-:|
-| *![Detail](image-3.png)* | *![Favorite](image-5.png)* | *![Booking](image-4.png)* |
+| *![Detail](assets/images/image-3.png)* | *![Favorite](assets/images/image-5.png)* | *![Booking](assets/images/image-4.png)* |
 
 ---
 
