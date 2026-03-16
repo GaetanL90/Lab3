@@ -16,7 +16,7 @@ Home  →  Detail  →  Booking  →  Confirmation  →  ↩ Home
 
 | Home Dashboard | Search & Filters | Drawer |
 |:-:|:-:|:-:|
-| ![Home](image.png)* | *![Search](image-1.png)* | *![Drawer](image-2.png)* |
+| *![Home](image.png)* | *![Search](image-1.png)* | *![Drawer](image-2.png)* |
 
 | Detail Screen | Favorites | Booking |
 |:-:|:-:|:-:|
