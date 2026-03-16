@@ -1,70 +1,102 @@
-# Lab 3 – Hard‑Coded Multi‑Screen Travel App UI
+# Travel Explorer
 
-This Flutter app implements the assignment requirements for a **hard‑coded multi‑screen Travel App UI**:
+ Flutter UI lab — advanced layout composition & navigation with hard-coded data.
 
-- **Screens**: Home dashboard, Detail screen, Booking screen (`lib/screens`).
-- **Hard‑coded data**: `Destination` model and sample trips in `lib/data/travel_data.dart`.
-- **Navigation flow**: `HomeScreen → DetailScreen → BookingScreen → back` using `Navigator.push` / `Navigator.pop` and passing `Destination` objects between screens.
-- **UI features**: AppBar with icons, search bar, horizontal category chips, grid of destination cards, large header image with gradient, scrollable content, booking summary card, form‑style fields, and confirmation dialog.
-- **Widgets & theming**: Uses many built‑in widgets (e.g. `Scaffold`, `AppBar`, `GridView`, `ListView`, `Stack`, `Positioned`, `Container`, `SafeArea`, `SingleChildScrollView`, `Wrap`, `Chip`, `ChoiceChip`, `TextField`, `TextFormField`, `ElevatedButton`, `FilledButton`, etc.) plus reusable widgets in `lib/widgets`.
+---
 
-## Assets
+## Navigation Flow
 
-- We add our destination photos into `assets/images/` using these filenames (or update `imageAsset` paths in `lib/data/travel_data.dart`):
-  - `paris.jpg`
-  - `bali.jpg`
-  - `kyoto.jpg`
-  - `capetown.jpg`
-
-The folder is wired in `pubspec.yaml` under:
-
-```yaml
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/
+```
+Home  →  Detail  →  Booking  →  Confirmation  →  ↩ Home
 ```
 
-## Running the app
+---
 
-From the project root:
+## Preview
+
+| Home Dashboard | Search & Filters | Drawer |
+|:-:|:-:|:-:|
+| ![Home]*![Home](image.png)* | ![Search]*![Search](image-1.png)* | ![Drawer]*![Drawer](image-2.png)* |
+
+| Detail Screen | Favorites | Booking |
+|:-:|:-:|:-:|
+| ![Detail]*![Detail](image-3.png)* | ![Favorites]*![Favorite](image-5.png)* | ![Booking]*![Booking](image-4.png)* |
+
+---
+
+## Features
+
+**Search & Filter**
+Real-time filtering over hard-coded list. Category tabs (`Beach`, `City`, `Adventure`) via `ChoiceChip`.
+
+**Favorites**
+Stateful heart toggle per card — outline → filled red. Persists within session.
+
+**Layouts**
+- `Home` — `Stack` + `GridView` with gradient overlays
+- `Detail` — `SliverAppBar` collapsible header + custom info chips
+- `Booking` — `Form` with traveler counter + `AlertDialog` confirmation
+
+---
+
+## Widget Audit `18+`
+
+| Category | Widgets |
+|---|---|
+| Layout | `Scaffold` `SafeArea` `Stack` `Positioned` `Column` `Row` `Expanded` `SizedBox` |
+| Scroll | `CustomScrollView` `SliverAppBar` `FlexibleSpaceBar` |
+| Lists | `GridView.builder` `ListView.builder` |
+| Components | `Card` `Drawer` `ChoiceChip` `CircleAvatar` `TextField` `ElevatedButton` |
+| Interaction | `GestureDetector` `Form` `TextFormField` `AlertDialog` |
+| Animation | `Hero` |
+
+---
+
+## Design System
+
+```
+Typography  — Bold headers / grey-toned metadata
+Depth       — BoxShadow elevation + LinearGradient overlays
+Layout      — MediaQuery + SafeArea for notch/aspect compatibility
+```
+
+---
+
+## Structure
+
+```
+lib/
+├── data/        # Hard-coded models & static list
+├── screens/     # Home · Detail · Booking
+├── widgets/     # DestinationCard · InfoTile (reusable)
+└── main.dart    # Entry point & theme
+```
+
+---
+
+## Setup
 
 ```bash
-cd lab3_travel_app
 flutter pub get
 flutter run
 ```
 
-## Report (for submission)
 
-This section serves as our **lab report** (it can also be copied into a PDF/Word document if a specific format is required).
+---
 
-### Screenshots
+## Lab Notes
 
-- Home Screen showing logo, search, categories, and destination grid.
-- Detail Screen showing large header image, information, and \"Book now\" button.
-- Booking Screen showing booking summary card, traveller form, and confirmation dialog.
+| Concern | Approach |
+|---|---|
+| Data | All content lives in `travel_data.dart` |
+| Navigation | `Navigator.push()` / `.pop()` |
+| Architecture | Reusable widget classes — DRY by design |
 
-### Layout and design explanation
+---
 
-- **Home Screen**: We use `Scaffold` and `AppBar` with a custom logo and title. The body is inside a `SafeArea` and `SingleChildScrollView` containing a `Column`. A heading prompts the user, followed by a search bar, horizontal category `ChoiceChip`s, and a `GridView.builder` that shows destination cards. This screen acts as the dashboard for the app.
-- **Detail Screen**: We build this screen with `CustomScrollView` and a `SliverAppBar` that expands to show a large destination photo with a gradient overlay and title. Below, a padded `Column` shows location, rating, trip info chips, description text, and highlight `Chip`s. A bottom `Container` with a price label and primary `ElevatedButton` stays pinned at the bottom for easy access to booking.
-- **Booking Screen**: We use a `Scaffold` with AppBar and a `Column`. At the top, a `_BookingSummaryCard` shows a small image and key trip info. Below, a `Form` with multiple `TextFormField`s collects traveller details, followed by controls for number of travellers, room type `ChoiceChip`s, and an optional notes field. The bottom row displays the computed total price and a `FilledButton` that confirms the booking and shows a success `AlertDialog`.
+## Students
 
-### Widgets used
-
-This app intentionally uses many different Flutter widgets, including (but not limited to):
-
-- **Structure and layout**: `Scaffold`, `AppBar`, `SafeArea`, `CustomScrollView`, `SingleChildScrollView`, `GridView.builder`, `ListView.separated`, `Column`, `Row`, `Wrap`, `SizedBox`, `Padding`, `Container`, `ClipRRect`, `Positioned`, `Stack`, `SliverAppBar`, `SliverToBoxAdapter`.
-- **Input and forms**: `TextField`, `TextFormField`, `Form`, `IconButton`, `ChoiceChip`, `Chip`.
-- **Display**: `Text`, `Icon`, `CircleAvatar`, `Image.asset`, `Hero`.
-- **Buttons**: `ElevatedButton`, `FilledButton`, `TextButton`, `InkWell`.
-- **Feedback and dialogs**: `AlertDialog`.
-- **Custom/reusable widgets**: `DestinationCard` (card for each destination), `_BookingSummaryCard`, `_RoomChip`, `_InfoChip`, `_SearchBar`, `_CategoryChips`.
-
-### Navigation flow
-
-- From the **Home Screen**, when we tap a destination card we use `Navigator.push` with a `MaterialPageRoute` to open the **Detail Screen` and pass a `Destination` object as hard‑coded data.
-- On the **Detail Screen**, the back arrow pops to the previous screen, while the home icon uses `Navigator.popUntil((route) => route.isFirst)` to go directly back to the Home Screen. Pressing \"Book now\" pushes the **Booking Screen**, again passing the same `Destination` object.
-- On the **Booking Screen**, the AppBar back button pops back to the Detail Screen, the home icon pops back to the Home Screen, and the \"Confirm\" button validates the `Form` and then shows an `AlertDialog` that confirms the booking and pops the booking screen when closed.
-
+| # | Name | Reg No |
+|---|---|---|
+| 1 | UWIZEYIMANA Gaetan |222008181|
+| 2 | NIYONIZERA Aline| 223009117 |
