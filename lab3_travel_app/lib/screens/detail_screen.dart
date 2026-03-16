@@ -1,259 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:lab3_travel_app/data/travel_data.dart';
-import 'package:lab3_travel_app/screens/booking_screen.dart';
+import '../data/travel_data.dart';
+import 'booking_screen.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key, required this.destination});
-
   final Destination destination;
+  const DetailScreen({super.key, required this.destination});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 260,
-                pinned: true,
-                stretch: true,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.home_rounded),
-                    onPressed: () {
-                      Navigator.of(context)
-                        ..popUntil((route) => route.isFirst);
-                    },
-                  ),
-                  const SizedBox(width: 4),
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(destination.title),
-                  background: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Hero(
-                        tag: 'hero-${Destination}-${destination.id}',
-                        child: Image.asset(
-                          destination.imageAsset,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.transparent,
-                              Colors.black54,
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 120),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on_rounded,
-                              color: Colors.blueAccent),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              destination.location,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          const Icon(Icons.star_rounded,
-                              color: Colors.amber, size: 20),
-                          const SizedBox(width: 4),
-                          Text(
-                            destination.rating.toStringAsFixed(1),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          _InfoChip(
-                            icon: Icons.nights_stay_rounded,
-                            label: '${destination.nights} nights',
-                          ),
-                          const SizedBox(width: 8),
-                          _InfoChip(
-                            icon: Icons.attach_money_rounded,
-                            label:
-                                '\$${destination.price.toStringAsFixed(0)} / person',
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'About this trip',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            CustomScrollView(
+              slivers: [
+                SliverAppBar(expandedHeight: 400, pinned: true, leading: const BackButton(color: Colors.white), flexibleSpace: FlexibleSpaceBar(background: Hero(tag: 'img-${destination.id}', child: Image.asset(destination.imageAsset, fit: BoxFit.cover)))),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(35))),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        Text(destination.title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                        Row(children: [const Icon(Icons.star, color: Colors.amber, size: 20), Text(" ${destination.rating}")])
+                      ]),
                       const SizedBox(height: 8),
-                      Text(
-                        destination.description,
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          height: 1.4,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'Highlights',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: destination.tags
-                            .map(
-                              (t) => Chip(
-                                label: Text(t),
-                                avatar: const Icon(
-                                  Icons.check_circle_rounded,
-                                  size: 16,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
+                      Row(children: [const Icon(Icons.location_on, color: Colors.blue, size: 18), Text(" ${destination.location}", style: const TextStyle(color: Colors.grey))]),
+                      const SizedBox(height: 25),
+                      const Text("About Trip", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      Text(destination.description, style: const TextStyle(fontSize: 16, color: Colors.black54, height: 1.5)),
+                      const SizedBox(height: 25),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        _DetailInfoTile(Icons.nights_stay, "Duration", "${destination.nights} Nights"),
+                        _DetailInfoTile(Icons.monetization_on, "Price", "\$${destination.price}"),
+                        _DetailInfoTile(Icons.map, "Type", destination.tags[0]),
+                      ]),
+                      const SizedBox(height: 120),
+                    ]),
                   ),
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 16,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(24),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'From',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        '\$${destination.price.toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 180,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                BookingScreen(destination: destination),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: const Text('Book now'),
-                    ),
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 0, left: 0, right: 0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(25, 20, 25, 30),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20)]),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text("Total Price", style: TextStyle(color: Colors.grey)), Text("\$${destination.price}", style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blueAccent))]),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BookingScreen(destination: destination))),
+                    child: const Text("Book Now", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  )
+                ]),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-class _InfoChip extends StatelessWidget {
-  const _InfoChip({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-
+class _DetailInfoTile extends StatelessWidget {
+  final IconData icon; final String title, value;
+  const _DetailInfoTile(this.icon, this.title, this.value);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE8F0FF),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: Colors.blueAccent),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
+    return Column(children: [Icon(icon, color: Colors.blueAccent), const SizedBox(height: 5), Text(title, style: const TextStyle(color: Colors.grey, fontSize: 12)), Text(value, style: const TextStyle(fontWeight: FontWeight.bold))]);
   }
 }
-

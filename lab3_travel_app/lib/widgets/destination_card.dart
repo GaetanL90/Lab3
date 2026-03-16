@@ -1,145 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:lab3_travel_app/data/travel_data.dart';
+import '../data/travel_data.dart';
+import '../screens/detail_screen.dart';
 
-class DestinationCard extends StatelessWidget {
-  const DestinationCard({
-    super.key,
-    required this.destination,
-    required this.onTap,
-  });
-
+class DestinationCard extends StatefulWidget {
   final Destination destination;
-  final VoidCallback onTap;
+  const DestinationCard({super.key, required this.destination});
 
   @override
+  State<DestinationCard> createState() => _DestinationCardState();
+}
+
+class _DestinationCardState extends State<DestinationCard> {
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: onTap,
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              offset: Offset(0, 6),
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScreen(destination: widget.destination))),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5))]),
+        child: Stack(
+          children: [
+            Positioned.fill(child: Hero(tag: 'img-${widget.destination.id}', child: ClipRRect(borderRadius: BorderRadius.circular(24), child: Image.asset(widget.destination.imageAsset, fit: BoxFit.cover)))),
+            Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withOpacity(0.7)]))),
+            
+            // Toggable Favorite Icon
+            Positioned(
+              top: 12, right: 12,
+              child: GestureDetector(
+                onTap: () => setState(() => widget.destination.isFavorite = !widget.destination.isFavorite),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white.withOpacity(0.3),
+                  child: Icon(widget.destination.isFavorite ? Icons.favorite : Icons.favorite_border, color: widget.destination.isFavorite ? Colors.red : Colors.white, size: 20),
+                ),
+              ),
             ),
+            Padding(padding: const EdgeInsets.all(15), child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text(widget.destination.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Row(children: [const Icon(Icons.location_on, color: Colors.white70, size: 14), Text(widget.destination.location, style: const TextStyle(color: Colors.white70, fontSize: 11))]),
+            ])),
           ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Hero(
-                  tag: 'hero-${DestinationCard}-${0}',
-                  child: Image.asset(
-                    destination.imageAsset,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.05),
-                      Colors.black.withOpacity(0.65),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_rounded,
-                          size: 16,
-                          color: Colors.white70,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            destination.location,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      destination.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.star_rounded,
-                          color: Colors.amber,
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          destination.rating.toStringAsFixed(1),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Text(
-                            '\$${destination.price.toStringAsFixed(0)}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
 }
-
